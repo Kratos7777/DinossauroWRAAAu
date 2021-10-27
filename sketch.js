@@ -52,30 +52,29 @@ function preload(){
 
 function setup() {
 
-  createCanvas(600,200)
+  createCanvas(windowWidth,windowHeight)
   
   //criar um sprite do trex
-  trex = createSprite(50,160,20,50);
+  trex = createSprite(50,height-40,20,50);
   trex.addAnimation("running", trex_correndo);
   trex.addAnimation("faleceu",trex_colidiu);
   trex.scale = 0.5;
   
   //criar um sprite do solo
-  solo = createSprite(200,180,400,20);
+  solo = createSprite(width/2,height-20,width,20);
   solo.addImage("ground",imagemdosolo);
-  solo.x = solo.width /2;
   solo.velocityX = -(4+pontos/100);
   
   //criando solo invisível
-  soloinvisivel = createSprite(200,190,400,10);
+  soloinvisivel = createSprite(200,height-10,400,10);
   soloinvisivel.visible = false;
   
-  game_over = createSprite(300,100,20,20);
+  game_over = createSprite(width/2,height-100,20,20);
   game_over.addImage ("FIM DE JOGO OTARO",game_over_relampago_marquinhos);
   game_over.scale = 0.5;
   game_over.visible = false;
   
-  kill_the_hero = createSprite(300,140,20,20);
+  kill_the_hero = createSprite(width/2,height-60,20,20);
   kill_the_hero.addImage("OUTRA CHANCE QUE DEUS TE DEU",HOJE_TEM_GOL_DO_RIBAMITO);
   kill_the_hero.scale = 0.5;
   kill_the_hero.visible = false;
@@ -105,8 +104,8 @@ function draw() {
   background("white");
   
   //console.log(trex.y)
-  text("pontuação: "+pontos,500,50);
-  text("Record: "+guinnessbook,500,70);
+  text("pontuação: "+pontos,width-100,height-150);
+  text("Record: "+guinnessbook,width-100,height-130);
   //console.log(frameCount);
   
   // pular quando a tecla espaço é acionada
@@ -116,17 +115,18 @@ function draw() {
      //dieturetry.play();
     }  
    if(estadoJogo === JOGAR){
-     if(keyDown("space")&& trex.y >= 150) {
+     if(keyDown("space")&& trex.y >= height-50) {
       trex.velocityY = -10;
       easportstchinag.play();
       }
      trex.velocityY = trex.velocityY + 0.6;
-     if (solo.x < 0){
+     if (solo.x < solo.width/5){
       solo.x = solo.width/2;
       }
-     gerarNuvens();
-     gerarCerrinha();
      pontos = Math.round(frameCount/3);
+      gerarNuvens();
+      gerarCerrinha();
+     
      if(pontos>0 && pontos%100 === 0){
         zico.play();
       }
@@ -158,15 +158,15 @@ function gerarNuvens() {
 
   
   if(frameCount%90 === 0){
-    nuvemzinha = createSprite(600,100,20,20);
+    nuvemzinha = createSprite(width,100,20,20);
     nuvemzinha.velocityX = -(2+pontos/100);
     nuvemzinha.addImage("Imagem",nuvemzinhamexendo);
     
-    nuvemzinha.y = Math.round(random(30,100));
+    nuvemzinha.y = Math.round(random(height-170,height-100));
     nuvemzinha.scale = random(0.25,1.25);
     //console.log(nuvemzinha.depth);
     //console.log(trex.depth);
-    nuvemzinha.lifetime = 320;
+    nuvemzinha.lifetime = width/nuvemzinha.velocityX;
     grupinhodosmarshmelow.add(nuvemzinha);  
     nuvemzinha.depth = trex.depth - 1;
  }
@@ -175,7 +175,7 @@ function gerarNuvens() {
 
 function gerarCerrinha(){
   if(frameCount%100 === 0){
-   Cerra = createSprite(600,160,20,20);
+   Cerra = createSprite(width,height-40,20,20);
    var bingo = Math.round(random(1,6));
    switch (bingo){
      case 1: Cerra.addImage ("CerrinhaDiferenciada",Cerrinha);
@@ -198,7 +198,7 @@ function gerarCerrinha(){
      break; 
    } 
    Cerra.velocityX = -(4+pontos/100);
-   Cerra.lifetime = 250;
+   Cerra.lifetime = width/Cerra.velocityX;
    grupinhodecactos.add(Cerra);
  }
 }
